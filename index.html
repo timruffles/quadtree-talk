@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Quadtrees</title>
+  
+  <link rel="stylesheet" href="reveal/css/reveal.min.css">
+  <link rel="stylesheet" href="reveal/lib/css/googlecode.css">
+
+  <link rel="stylesheet" href="src/slides-theme/style.css">
+  <link rel="stylesheet" href="src/slides-theme/talk-specific.css">
+
+  <!-- demos -->
+
+  <!-- for live coding -->
+  <link rel="stylesheet" href="src/js/little-console.css" id="theme">
+
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-24335480-1']);
+  _gaq.push(['_trackPageview']);
+
+  var asyncScript = function(src) {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = src;
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  };
+
+  asyncScript(('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js');
+  </script>
+
+  <script src="src/js/revealHooks.js"></script>
+
+</head>
+
+<body>
+
+  <div class="reveal">
+    <div class="slides">
+<section  class="front"><h2 id="quadtrees">Quadtrees</h2>
+<p><a href="http://twitter.com/timruffles">@timruffles</a></p>
+</section>
+
+<section data-state='title' class=""><h2 id="first-problem">First: problem</h2>
+</section>
+
+<section  class=""><h2 id="efficient-use-of-spatial-data">Efficient use of spatial data</h2>
+</section>
+
+<section data-state='title' class=""><h2 id="images">Images</h2>
+</section>
+
+<section  class=""><h2 id="how-can-we-store-them-efficiently-">How can we store them efficiently?</h2>
+</section>
+
+<section  class=""><h2 id="capturing-redundancy">Capturing redundancy</h2>
+</section>
+
+<section  class=""><h2 id="compression">Compression</h2>
+</section>
+
+<section  class=""><h2 id="how-can-we-manipulate-them-">How can we manipulate them?</h2>
+</section>
+
+<section  class=""><h2 id="resize">Resize</h2>
+</section>
+
+<section  class=""><h2 id="rotations">Rotations</h2>
+</section>
+
+<section data-state='title' class=""><h2 id="spatial-data">Spatial data</h2>
+</section>
+
+<section  class=""><h2 id="what-s-the-nearest-node-">What&#39;s the nearest node?</h2>
+</section>
+
+<section  class=""><h2 id="what-am-i-colliding-with-">What am I colliding with?</h2>
+</section>
+
+<section data-state='title' class=""><h2 id="our-meta-algorithm">Our meta-algorithm</h2>
+</section>
+
+<section  class=""><h2 id="divide-and-conquer">Divide and conquer</h2>
+</section>
+
+<section  class=""><h2 id="how-can-we-cut-big-challenges-down-">How can we cut big challenges down...</h2>
+<p><img src="src/img/1d problem.png" alt="1d problem"></p>
+</section>
+
+<section  class=""><h2 id="-to-simpler-related-challenges">...to simpler, related challenges</h2>
+</section>
+
+<section  class=""><h2 id="1d-search">1d search</h2>
+<p><img src="src/img/1d search.png" alt="1d problem"></p>
+</section>
+
+<section  class=""><h2 id="big-idea">Big idea</h2>
+<ul>
+<li>Capturing logic of our data, in our structure</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="e-g-proximity">e.g proximity</h2>
+</section>
+
+<section  class=""><h2 id="unsorted">Unsorted</h2>
+<ul>
+<li><code>[10, 15, 4, 5, 16, 13]</code></li>
+<li>Which numbers are closer than 2 apart?</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="brute-force">Brute-force</h2>
+<ul>
+<li>Compare each to each</li>
+<li><code>[10, 15, 4, 5]</code></li>
+<li><code>10 vs 15, 10 vs 4, 10 vs 5</code></li>
+<li><code>15 vs 4,  15 vs 5</code></li>
+<li><code>4  vs 5</code></li>
+</ul>
+</section>
+
+<section  class=""><h2 id="why-bad-">Why bad?</h2>
+<pre><code class="lang-javascript">const runtime = (n, t = 0) =&gt; n 
+  ? runtime(n - 1, t += n - 1) 
+  : t
+
+
+const times = Array.from({ length: 10 },
+   (_, i) =&gt; runtime((i + 1) * 10))
+// [45, 190, 435, 780, 1225, 1770,
+   2415, 3160, 4005, 4950]
+</code></pre>
+</section>
+
+<section  class=""><h2 id="hugely-longer-for-more-nodes">Hugely longer for more nodes</h2>
+<p><img src="src/img/runtimes.png" alt="runtimes"></p>
+</section>
+
+<section  class=""><h2 id="sorted">Sorted</h2>
+<ul>
+<li><code>[4, 5, 10, 15, 13, 16]</code></li>
+<li>Closest bigger and smaller number are neighbours</li>
+<li>So we can just check neighbours!</li>
+<li>Linear runtime</li>
+</ul>
+</section>
+
+<section data-state='title' class=""><h2 id="quadtrees">Quadtrees</h2>
+</section>
+
+<section  class=""><h2 id="4-node">4-node</h2>
+<ul>
+<li>quad = 4</li>
+<li>tree = parent child</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="why-">Why?</h2>
+</section>
+
+<section  class=""><h2 id="1d-search">1D search</h2>
+<p><img src="src/img/1d problem.png" alt="1d problem"></p>
+<ul>
+<li>Which numbers are closer than 2 apart?</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="2d-search">2D search</h2>
+<p><img src="src/img/2d problem.png" alt="2d problem"></p>
+<ul>
+<li>Which nodes are closer than 2 apart?</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="can-t-index-on-2d">Can&#39;t index on 2D</h2>
+<ul>
+<li>Distance is <code>sqrt(xDistance(a,b)^2 + yDistance(a,b)^2)</code> (Pythagoras)</li>
+<li>Can&#39;t collapse our dimension</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="asking-each-node-is-costly">Asking each node is costly</h2>
+<ul>
+<li>Again, quadratic runtime</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="divide-harder">Divide harder</h2>
+<p><img src="src/img/2d problem.png" alt="2d problem"></p>
+<ul>
+<li>Which nodes collide?</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="into-easier">Into easier</h2>
+<p><img src="src/img/2d search.png" alt="2d search"></p>
+</section>
+
+<section  class=""><h2 id="our-first-quadtree">Our first quadtree</h2>
+<p><img src="src/img/2d search.png" alt="2d search"></p>
+</section>
+
+<section data-state='title' class=""><h2 id="quadtrees-for-images">Quadtrees for images</h2>
+</section>
+
+<section  class=""><h2 id="to-simplify-b-w">To simplify - B&amp;W</h2>
+<p><img src="src/img/binary cat.png" alt="black and white cat"></p>
+</section>
+
+<section  class=""><h2 id="representing-image-data">Representing image data</h2>
+<p><img src="src/img/source image.png" alt="source"></p>
+</section>
+
+<section  class=""><h2 id="compression">Compression</h2>
+<p><img src="src/img/compressed image.png" alt="source"></p>
+</section>
+
+<section  class=""><h2 id="how-">How?</h2>
+<ul>
+<li>We can compress the below:</li>
+<li><code>{ size: 8, nodes: [0,0,1,0] }</code></li>
+</ul>
+<p><img src="src/img/compressible.png" alt="source"></p>
+</section>
+
+<section  class=""><h2 id="creating">Creating</h2>
+<ul>
+<li>Compression starts happens at leaves</li>
+<li>Why?</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="recurse-up">Recurse up</h2>
+<ul>
+<li>Is whole block on or off?</li>
+<li>If so, let&#39;s represent it as a boolean</li>
+<li>Otherwise, let&#39;s represent it as an array</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="one-simple-coding">One simple coding</h2>
+<ul>
+<li>Nodes are arrays: <code>[1, [1,0,1,0], 1, 0]</code></li>
+<li>Store size only at top of tree</li>
+<li>Order is <code>topLeft, topRight, bottomLeft, bottomRight</code></li>
+</ul>
+</section>
+
+<section data-state='notitle' class=""><h2 id="ok">Ok</h2>
+<pre><code class="lang-javascript">const tree = {
+  size: 8,
+  nodes: [
+    // top left + top right...
+    [ 
+      [0,1,0,1],
+      1,
+      [0,1,0,0],
+      [1,1,0,0],
+    ],
+</code></pre>
+<p><img src="src/img/compressed image.png" alt="source"></p>
+</section>
+
+<section  class=""><h2 id="creation">Creation</h2>
+<ol>
+<li>Are we at leaf? (Size = 4)<ol>
+<li>Are all the nodes on or off?<ol>
+<li>Return boolean</li>
+<li>Return Array</li>
+</ol>
+</li>
+<li>Recurse to create 4 quadtrees from sub-areas</li>
+<li>Are all my subtrees boolean?<ol>
+<li>Return boolean</li>
+<li>Return Array</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+
+<section  class=""><h2 id="expansion">Expansion</h2>
+<ol>
+<li>Is this node constant (<code>true</code> or <code>false</code>)<ol>
+<li>Fill area</li>
+<li>Recurse into subnodes</li>
+</ol>
+</li>
+</ol>
+</section>
+
+<section  class=""><h2 id="challenge-stack-space">Challenge: stack space</h2>
+</section>
+
+<section  class=""><h2 id="image-data-is-large">Image data is large</h2>
+<ul>
+<li>800 x 600 = 480,000</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="js-s-stack-is-not">JS&#39;s stack is not</h2>
+<ul>
+<li>~10,000s </li>
+</ul>
+</section>
+
+<section  class=""><h2 id="we-can-t-do-simple-recursion">We can&#39;t do simple recursion</h2>
+<pre><code class="lang-javascript">function quadtree(imageData) {
+  if(imageData.length === 4) {
+    // compress
+  } else {
+    return quadtree([
+      quadtree(topLeft(imageData)),
+      quadtree(topRight(imageData)),
+      // ...
+    ])
+  }
+}
+</code></pre>
+</section>
+
+<section  class=""><h2 id="solution">Solution</h2>
+</section>
+
+<section  class=""><h2 id="make-our-own-stack-">Make our own stack!</h2>
+</section>
+
+<section  class=""><h2 id="recursion-to-stack">Recursion to stack</h2>
+<pre><code class="lang-javascript">function quadtree(imageData) {
+  const stack = [() =&gt; new WorkNode(imageData)];
+  let node;
+
+  while(node = stack.pop) {
+    // replace recursion with push to stack
+    stack.push(new WorkNode);
+  }
+}
+</code></pre>
+</section>
+
+<section data-state='title' class=""><h2 id="goals">Goals</h2>
+</section>
+
+<section  class=""><h2 id="rotation">Rotation</h2>
+<ul>
+<li>Rotate whole tree</li>
+<li>Mirroring</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="scaling">Scaling</h2>
+<ul>
+<li>Scale down image</li>
+<li>Scale up image (resample)</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="visualisation">Visualisation</h2>
+<ul>
+<li>Show where the tree nodes are on image</li>
+</ul>
+</section>
+
+<section  class=""><h2 id="colour-">Colour!</h2>
+<ul>
+<li>Support colour trees</li>
+</ul>
+</section>
+
+</div>
+</div>
+
+<!-- demo code -->
+
+
+<!-- demos -->
+
+<!-- live coding -->
+<script src=src/js/little-console.js></script>
+<script src=src/js/showConsoles.js></script>
+
+<!-- reveal -->
+<script src="reveal/lib/js/head.min.js"></script>
+<script src="reveal/plugin/highlight/highlight.js"></script>
+<script src="reveal/js/reveal.js"></script>
+<script src="src/js/revealConfig.js"></script>
+
+</body>

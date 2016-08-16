@@ -1,0 +1,7 @@
+install: true # everything is inlined for easy install
+language: node_js
+node_js:
+- "6"
+env:
+  - VS_EXAMPLE=1
+script: npm test

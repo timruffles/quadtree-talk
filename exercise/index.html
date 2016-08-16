@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<title>Quadtree demo</title>
+<style>
+  body {
+    padding: 2em 1em;
+    font-family: sans-serif;
+  }
+  #demo {
+    overflow: auto;
+  }
+  #demo div {
+    float: left;
+  }
+  #extractor {
+    display: none;
+  }
+</style>
+<body>
+  <div id=demo>
+    <div>
+      <canvas id=source >
+      </canvas>
+    </div>
+
+    <div>
+      <canvas id=target >
+      </canvas>
+      <p>
+        <button id=rotate disabled>Rotate</button>
+      </p>
+    </div>
+  </div>
+
+  <canvas id=extractor  >
+  </canvas>
+
+  <div>
+    <h3>Quadtree</h3>
+    <pre id=tree>
+    </pre>
+  </div>
+
+  <script src=bundle.js></script>
+</body>

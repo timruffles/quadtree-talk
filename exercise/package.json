@@ -1,0 +1,19 @@
+{
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently live-server 'watchify demo.js -t envify --verbose --debug --outfile bundle.js'",
+    "tdd": "mocha --watch",
+    "test": "mocha"
+  },
+  "private": true,
+  "dependencies": {
+  },
+  "devDependencies": {
+    "concurrently": "^2.1.0",
+    "envify": "^3.4.1",
+    "browserify": "^12.0.1",
+    "chai": "^3.4.0",
+    "mocha": "^2.3.3",
+    "watchify": "^3.6.1"
+  }
+}
