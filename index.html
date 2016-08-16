@@ -39,6 +39,7 @@
   <div class="reveal">
     <div class="slides">
 <section  class="front"><h2 id="quadtrees">Quadtrees</h2>
+<p><img src="src/img/quadtree.png" alt="quadtree"></p>
 <p><a href="http://twitter.com/timruffles">@timruffles</a></p>
 </section>
 
@@ -52,30 +53,19 @@
 </section>
 
 <section  class=""><h2 id="how-can-we-store-them-efficiently-">How can we store them efficiently?</h2>
-</section>
-
-<section  class=""><h2 id="capturing-redundancy">Capturing redundancy</h2>
-</section>
-
-<section  class=""><h2 id="compression">Compression</h2>
+<p><img src="src/img/compressed image.png" alt="cat"></p>
 </section>
 
 <section  class=""><h2 id="how-can-we-manipulate-them-">How can we manipulate them?</h2>
 </section>
 
-<section  class=""><h2 id="resize">Resize</h2>
-</section>
-
-<section  class=""><h2 id="rotations">Rotations</h2>
-</section>
-
 <section data-state='title' class=""><h2 id="spatial-data">Spatial data</h2>
 </section>
 
-<section  class=""><h2 id="what-s-the-nearest-node-">What&#39;s the nearest node?</h2>
+<section  class=""><h2 id="what-am-i-colliding-with-">What am I colliding with?</h2>
 </section>
 
-<section  class=""><h2 id="what-am-i-colliding-with-">What am I colliding with?</h2>
+<section  class=""><h2 id="what-s-the-nearest-node-">What&#39;s the nearest node?</h2>
 </section>
 
 <section data-state='title' class=""><h2 id="our-meta-algorithm">Our meta-algorithm</h2>
@@ -252,13 +242,13 @@ const times = Array.from({ length: 10 },
 <pre><code class="lang-javascript">const tree = {
   size: 8,
   nodes: [
-    // top left + top right...
-    [ 
+    [/* TL …*/], [/* TR …*/], 
+    [  /* BL */
       [0,1,0,1],
       1,
       [0,1,0,0],
       [1,1,0,0],
-    ],
+    ], [/* BR …*/] ],
 </code></pre>
 <p><img src="src/img/compressed image.png" alt="source"></p>
 </section>
@@ -303,7 +293,7 @@ const times = Array.from({ length: 10 },
 
 <section  class=""><h2 id="js-s-stack-is-not">JS&#39;s stack is not</h2>
 <ul>
-<li>~10,000s </li>
+<li>x0,000s </li>
 </ul>
 </section>
 
@@ -341,7 +331,13 @@ const times = Array.from({ length: 10 },
 </code></pre>
 </section>
 
-<section data-state='title' class=""><h2 id="goals">Goals</h2>
+<section  class=""><h2 id="cheat-sheets">Cheat-sheets</h2>
+<ul>
+<li><a href="http://haacked.com/archive/2007/03/04/Replacing_Recursion_With_a_Stack.aspx/">Recursion -&gt; stack</a></li>
+</ul>
+</section>
+
+<section data-state='title' class=""><h2 id="bonus-goals-">Bonus goals!</h2>
 </section>
 
 <section  class=""><h2 id="rotation">Rotation</h2>

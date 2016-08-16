@@ -46,13 +46,13 @@
 const tree = {
   size: 8,
   nodes: [
-    // top left + top right...
-    [ 
+    [/\* TL …\*/], [/\* TR …\*/], 
+    [  /\* BL \*/
       [0,1,0,1],
       1,
       [0,1,0,0],
       [1,1,0,0],
-    ],
+    ], [/\* BR …\*/] ],
 ```
 
 ![source](src/img/compressed image.png)
@@ -82,7 +82,7 @@ const tree = {
 
 ## JS's stack is not
 
-- ~10,000s 
+- x0,000s 
 
 ## We can't do simple recursion
 
@@ -122,7 +122,7 @@ function quadtree(imageData) {
 
 - [Recursion -> stack](http://haacked.com/archive/2007/03/04/Replacing_Recursion_With_a_Stack.aspx/)
 
-## Goals
+## Bonus goals!
 { tags: { state: "title" }}
 
 ## Rotation

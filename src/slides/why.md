@@ -10,22 +10,14 @@
 
 ## How can we store them efficiently?
 
-## Capturing redundancy
+![cat](src/img/compressed image.png)
 
-## Compression
-
-## How can we manipulate them?
-
-## Resize
-
-## Rotations
-
+## How can we manipulate them?
 
 ## Spatial data
 {tags:{state:"title"}}
 
+## What am I colliding with?
 
 ## What's the nearest node?
-
-## What am I colliding with?
 
