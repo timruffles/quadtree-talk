@@ -19,5 +19,7 @@
 
 ## What am I colliding with?
 
+![collision](src/img/collision.jpg)
+
 ## What's the nearest node?
 
