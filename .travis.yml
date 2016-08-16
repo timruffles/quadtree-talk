@@ -4,4 +4,6 @@ node_js:
 - "6"
 env:
   - VS_EXAMPLE=1
-script: npm test
+script: 
+- npm install
+- npm test
